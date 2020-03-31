@@ -14,6 +14,7 @@ class SidebarComponent extends React.Component {
             addingNote: false,
             title: null
         }
+        this.inputRef = new React.createRef();
     }
     
 
@@ -34,6 +35,7 @@ class SidebarComponent extends React.Component {
                                 className = {classes.newNoteInput}
                                 placeholder='Enter Note Title'
                                 onKeyUp={(e) => this.updateTitle(e.target.value)}
+                                autoFocus
                             />
                             <Button 
                                 className={classes.newNoteSubmitBtn}

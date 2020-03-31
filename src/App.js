@@ -28,8 +28,12 @@ class App extends Component {
           data['id'] = _doc.id;
           return data;
         })
-        console.log(notes);
         this.setState({notes: notes});
+        console.log(notes);
+        if(notes){
+          console.log('Eneterd')
+          this.selectNote(this.state.notes[0],0);
+        }
       })
   }
 
@@ -41,15 +45,18 @@ class App extends Component {
     if(window.confirm(`Are you sure you want to delete: ${_note.title}`)){
       console.log(`delete note`);
       const noteIndex=  this.state.notes.indexOf(_note);
-      await this.setState({ notes: this.state.notes.filter(note => note !== _note) });
+      // console.log('noteindex',noteIndex)
+      // await this.setState({ notes: this.state.notes.filter(note => note !== _note) });
       if(this.state.selectedNoteIndex === noteIndex){
         this.setState({ selectedNoteIndex: null, selectedNote: null });
       }else{
        this.state.notes.length > 1 ? 
-       this.selectNote(this.state.notes[this.state.selectedNoteIndex], this.state.selectedNoteIndex ) :
+       this.selectNote(this.state.notes[this.state.selectedNoteIndex ], this.state.selectedNoteIndex ) :
        this.setState({ selectedNoteIndex: null, selectedNote: null });
       }
     }
+
+    await this.setState({ notes: this.state.notes.filter(note => note !== _note) });
 
     firebase
       .firestore()
@@ -74,7 +81,8 @@ class App extends Component {
       const newId = newFromDB.id;
       await this.setState({ notes: [...this.state.notes,note] });
       const newNodeIndex = this.state.notes.indexOf(this.state.notes.filter(_note => _note.id === newId)[0]);
-      this.setState({ selectNote: this.state.notes[newNodeIndex], selectedNoteIndex: newNodeIndex });
+      console.log(newNodeIndex);
+      this.setState({ selectedNote: this.state.notes[newNodeIndex], selectedNoteIndex: newNodeIndex });
   }
 
   noteUpdate = (id,nodeObj) => {
